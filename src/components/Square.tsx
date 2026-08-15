@@ -18,7 +18,7 @@ function Square({ square }: Props) {
       <Icon
         className={cn(
           "size-12",
-          piece.colour === "white" ? "fill-white" : "fill-black",
+          piece.colour === "white" ? "stroke-white" : "stroke-black",
         )}
       />
     );
