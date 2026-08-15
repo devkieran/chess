@@ -5,7 +5,7 @@ function Board() {
   return (
     <section className="w-lg border">
       {ranks.map((rank) => (
-        <div className="flex h-16 w-12" key={rank}>
+        <div className="flex h-16" key={rank}>
           {files.map((file) => (
             <Square square={`${file}${rank}`} key={file} />
           ))}
