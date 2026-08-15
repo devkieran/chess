@@ -1,12 +1,13 @@
+import { files, ranks } from "../config/board";
 import Square from "./Square";
 
 function Board() {
   return (
     <section className="w-lg border">
-      {Array.from({ length: 8 }, (_, row) => (
-        <div className="flex h-16">
-          {Array.from({ length: 8 }, (_, col) => (
-            <Square row={row} col={col} />
+      {ranks.map((rank) => (
+        <div className="flex h-16" key={rank}>
+          {files.map((file) => (
+            <Square square={`${file}${rank}`} key={file} />
           ))}
         </div>
       ))}

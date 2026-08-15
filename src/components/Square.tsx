@@ -1,46 +1,32 @@
-import {
-  ChessBishop,
-  ChessKing,
-  ChessKnight,
-  ChessQueen,
-  ChessRook,
-} from "lucide-react";
-
-const colours = {
-  light: "bg-olive-200",
-  dark: "bg-amber-800",
-};
+import { board } from "../config/board";
+import type { Square as SquareType } from "../types/board";
+import { getSquareColour, pieceIcons } from "../utils/board";
 
 type Props = {
-  row: number;
-  col: number;
+  square: SquareType;
 };
 
-function Square({ row, col }: Props) {
-  function getColour() {
-    if (row % 2 === 0) {
-      return col % 2 === 0 ? colours.light : colours.dark;
-    }
-
-    return col % 2 === 0 ? colours.dark : colours.light;
-  }
-
+function Square({ square }: Props) {
   function getPiece() {
-    if (row !== 0 && row !== 7) return null;
+    const piece = board[square];
+    if (!piece) return null;
 
-    // Rooks
-    if (col === 0 || col === 7) return <ChessRook />;
-    // Knights
-    if (col === 1 || col === 6) return <ChessKnight />;
-    // Bishops
-    if (col === 2 || col === 5) return <ChessBishop />;
-    // Queens
-    if (col === 3) return <ChessQueen />;
-    // Kings
-    if (col === 4) return <ChessKing />;
+    const Icon = pieceIcons[piece.type];
+
+    return (
+      <Icon
+        className={`size-12 ${piece.colour === "white" ? "fill-white" : "fill-black"}`}
+      />
+    );
   }
 
-  return <div className={`grow ${getColour()}`}>{getPiece()}</div>;
+  return (
+    <div
+      className={`grow flex items-center justify-center ${getSquareColour(square)}`}
+    >
+      {getPiece()}
+    </div>
+  );
 }
 
 export default Square;
