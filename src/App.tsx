@@ -1,9 +1,9 @@
-import "./styles/index.css";
 import Board from "./components/Board";
+import "./styles/index.css";
 
 function App() {
   return (
-    <main className="h-screen flex items-center justify-center">
+    <main className="flex h-screen items-center justify-center">
       <Board />
     </main>
   );

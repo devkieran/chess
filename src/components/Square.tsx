@@ -1,5 +1,6 @@
 import { board } from "../config/board";
 import type { Square as SquareType } from "../types/board";
+import { cn } from "../utils";
 import { getSquareColour, pieceIcons } from "../utils/board";
 
 type Props = {
@@ -15,14 +16,20 @@ function Square({ square }: Props) {
 
     return (
       <Icon
-        className={`size-12 ${piece.colour === "white" ? "fill-white" : "fill-black"}`}
+        className={cn(
+          "size-12",
+          piece.colour === "white" ? "fill-white" : "fill-black",
+        )}
       />
     );
   }
 
   return (
     <div
-      className={`grow flex items-center justify-center ${getSquareColour(square)}`}
+      className={cn(
+        "flex grow items-center justify-center",
+        getSquareColour(square),
+      )}
     >
       {getPiece()}
     </div>
