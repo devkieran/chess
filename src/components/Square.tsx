@@ -5,42 +5,28 @@ import { getSquareColour, pieceIcons } from "../utils/board";
 type Props = {
   square: SquareType;
   piece?: Piece;
-  onPieceMoved: (
-    startingSquare: SquareType,
-    destinationSquare: SquareType,
-  ) => void;
+  isSelected: boolean;
+  onSquareClicked: () => void;
 };
 
-function Square({ square, piece, onPieceMoved }: Props) {
+function Square({ square, piece, isSelected, onSquareClicked }: Props) {
   const PieceIcon = piece && pieceIcons[piece.type];
 
   return (
     <div
       className={cn(
         "flex size-16 grow items-center justify-center",
-        getSquareColour(square),
+        getSquareColour(square, isSelected),
       )}
-      onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => {
-        const startingSquare = e.dataTransfer.getData("square") as SquareType;
-        onPieceMoved(startingSquare, square);
-      }}
+      onClick={() => onSquareClicked()}
     >
       {PieceIcon && (
-        <div
-          className="cursor-pointer"
-          draggable
-          onDragStart={(e) => {
-            e.dataTransfer.setData("square", square);
-          }}
-        >
-          <PieceIcon
-            className={cn(
-              "size-12",
-              piece.colour === "white" ? "stroke-white" : "stroke-black",
-            )}
-          />
-        </div>
+        <PieceIcon
+          className={cn(
+            "size-12 cursor-pointer",
+            piece.colour === "white" ? "stroke-white" : "stroke-black",
+          )}
+        />
       )}
     </div>
   );

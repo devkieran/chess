@@ -7,6 +7,7 @@ import {
   ChessRook,
   type LucideIcon,
 } from "lucide-react";
+import { cn } from ".";
 import type { File, Piece, Rank, Square } from "../types/board";
 
 export function isFileEven(file: File) {
@@ -27,12 +28,16 @@ export function getSquareCoordinates(square: Square): {
   };
 }
 
-export function getSquareColour(square: Square) {
+export function getSquareColour(square: Square, isSelected: boolean) {
   const { file, rank } = getSquareCoordinates(square);
 
   const isLight = rank % 2 === 0 ? isFileEven(file) : !isFileEven(file);
 
-  return isLight ? "bg-olive-200" : "bg-amber-800";
+  return cn(
+    isLight ? "bg-olive-200" : "bg-amber-700",
+    isSelected && "ring-4 ring-inset",
+    isSelected && (isLight ? "ring-olive-400" : "ring-amber-900"),
+  );
 }
 
 export const pieceIcons: Record<Piece["type"], LucideIcon> = {
