@@ -38,13 +38,6 @@ function Board() {
       return;
     }
 
-    console.log(
-      "selectedSquare",
-      board[selectedSquare],
-      "clicked square",
-      board[square],
-    );
-
     if (board[selectedSquare].colour === board[square].colour) {
       console.info("User is trying to capture a piece with the same colour");
     } else {
