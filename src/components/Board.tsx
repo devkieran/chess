@@ -8,7 +8,6 @@ function Board() {
   const [selectedSquare, setSelectedSquare] = useState<SquareType>();
 
   function handleSquareClicked(square: SquareType) {
-    console.log("square clicked", square);
     if (!selectedSquare) {
       if (board[square]) {
         setSelectedSquare(square);
@@ -19,18 +18,17 @@ function Board() {
       return;
     }
 
-    if (!board[selectedSquare]) {
-      const newBoard = { ...board };
-      newBoard[selectedSquare] = board[square];
-      setBoard(newBoard);
-      setSelectedSquare(undefined);
+    const selectedPiece = board[selectedSquare]!; // assert as if a square has been selected then it must have had a piece
+    const pieceToCapture = board[square];
 
-      return;
-    }
+    // TODO: piece logic...
+    // if (selectedPiece.type === "pawn") {
 
-    if (!board[square]) {
+    // }
+
+    if (!pieceToCapture) {
       const newBoard = { ...board };
-      newBoard[square] = board[selectedSquare];
+      newBoard[square] = selectedPiece;
       newBoard[selectedSquare] = undefined;
       setBoard(newBoard);
       setSelectedSquare(undefined);
@@ -38,7 +36,7 @@ function Board() {
       return;
     }
 
-    if (board[selectedSquare].colour === board[square].colour) {
+    if (selectedPiece.colour === pieceToCapture.colour) {
       console.info("User is trying to capture a piece with the same colour");
     } else {
       const newBoard = { ...board };
