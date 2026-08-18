@@ -18,7 +18,7 @@ export function isRankEven(rank: Rank) {
   return rank % 2 === 0;
 }
 
-export function getSquareCoordinates(square: Square): {
+export function getSquareCoords(square: Square): {
   file: File;
   rank: Rank;
 } {
@@ -29,7 +29,7 @@ export function getSquareCoordinates(square: Square): {
 }
 
 export function getSquareColour(square: Square, isSelected: boolean) {
-  const { file, rank } = getSquareCoordinates(square);
+  const { file, rank } = getSquareCoords(square);
 
   const isLight = rank % 2 === 0 ? isFileEven(file) : !isFileEven(file);
 

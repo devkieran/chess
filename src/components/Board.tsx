@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { board as startingBoard } from "../config/board";
+import { files, board as startingBoard } from "../config/board";
 import type { Square as SquareType } from "../types/board";
+import { getSquareCoords } from "../utils/board";
 import Square from "./Square";
 
 function Board() {
   const [board, setBoard] = useState(startingBoard);
   const [selectedSquare, setSelectedSquare] = useState<SquareType>();
 
+  // TODO: this function is very very messy - needs a big tidy up once foundation logic exists
   function handleSquareClicked(square: SquareType) {
     if (!selectedSquare) {
       if (board[square]) {
@@ -18,13 +20,57 @@ function Board() {
       return;
     }
 
+    if (selectedSquare === square) {
+      setSelectedSquare(undefined);
+      return;
+    }
+
     const selectedPiece = board[selectedSquare]!; // assert as if a square has been selected then it must have had a piece
+    const { file: selectedSquareFile, rank: selectedSquareRank } =
+      getSquareCoords(selectedSquare);
+    const selectedSquareFileIndex = files.indexOf(selectedSquareFile);
+    // const selectedSquareRankIndex = ranks.indexOf(selectedSquareRank);
+
     const pieceToCapture = board[square];
+    const { file: squareFile, rank: squareRank } = getSquareCoords(square);
+    const squareFileIndex = files.indexOf(squareFile);
+    // const squareRankIndex = ranks.indexOf(selectedSquareRank);
 
-    // TODO: piece logic...
-    // if (selectedPiece.type === "pawn") {
+    if (pieceToCapture && selectedPiece.colour === pieceToCapture.colour) {
+      setSelectedSquare(square);
+      return;
+    }
 
-    // }
+    if (selectedPiece.type === "pawn") {
+      const fileDifference = Math.abs(
+        selectedSquareFileIndex - squareFileIndex,
+      );
+
+      console.log(fileDifference, selectedSquareFileIndex, squareFileIndex);
+
+      if (pieceToCapture && fileDifference !== 1) {
+        console.info("Pawns can only capture diagonally");
+        return;
+      }
+
+      if (!pieceToCapture && selectedSquareFile !== squareFile) {
+        console.info("Pawns can only move vertically");
+        return;
+      }
+
+      if (
+        (selectedPiece.colour === "white" &&
+          squareRank - selectedSquareRank !== 1) ||
+        (selectedPiece.colour === "black" &&
+          selectedSquareRank - squareRank !== 1)
+      ) {
+        console.info("Pawns can only move one square at a time");
+        return;
+      }
+    } else {
+      console.info("Piece movement not programmed");
+      return;
+    }
 
     if (!pieceToCapture) {
       const newBoard = { ...board };
@@ -36,15 +82,11 @@ function Board() {
       return;
     }
 
-    if (selectedPiece.colour === pieceToCapture.colour) {
-      console.info("User is trying to capture a piece with the same colour");
-    } else {
-      const newBoard = { ...board };
-      newBoard[square] = board[selectedSquare];
-      newBoard[selectedSquare] = undefined;
-      setBoard(newBoard);
-      setSelectedSquare(undefined);
-    }
+    const newBoard = { ...board };
+    newBoard[square] = board[selectedSquare];
+    newBoard[selectedSquare] = undefined;
+    setBoard(newBoard);
+    setSelectedSquare(undefined);
   }
 
   return (
