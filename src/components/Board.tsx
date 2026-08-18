@@ -41,35 +41,37 @@ function Board() {
       return;
     }
 
-    if (selectedPiece.type === "pawn") {
-      const fileDifference = Math.abs(
-        selectedSquareFileIndex - squareFileIndex,
-      );
+    switch (selectedPiece.type) {
+      case "pawn": {
+        const fileDifference = Math.abs(
+          selectedSquareFileIndex - squareFileIndex,
+        );
 
-      console.log(fileDifference, selectedSquareFileIndex, squareFileIndex);
+        if (pieceToCapture && fileDifference !== 1) {
+          console.info("Pawns can only capture diagonally");
+          return;
+        }
 
-      if (pieceToCapture && fileDifference !== 1) {
-        console.info("Pawns can only capture diagonally");
+        if (!pieceToCapture && selectedSquareFile !== squareFile) {
+          console.info("Pawns can only move vertically");
+          return;
+        }
+
+        if (
+          (selectedPiece.colour === "white" &&
+            squareRank - selectedSquareRank !== 1) ||
+          (selectedPiece.colour === "black" &&
+            selectedSquareRank - squareRank !== 1)
+        ) {
+          console.info("Pawns can only move one square at a time");
+          return;
+        }
+        break;
+      }
+      default: {
+        console.info("Piece movement not programmed");
         return;
       }
-
-      if (!pieceToCapture && selectedSquareFile !== squareFile) {
-        console.info("Pawns can only move vertically");
-        return;
-      }
-
-      if (
-        (selectedPiece.colour === "white" &&
-          squareRank - selectedSquareRank !== 1) ||
-        (selectedPiece.colour === "black" &&
-          selectedSquareRank - squareRank !== 1)
-      ) {
-        console.info("Pawns can only move one square at a time");
-        return;
-      }
-    } else {
-      console.info("Piece movement not programmed");
-      return;
     }
 
     if (!pieceToCapture) {
