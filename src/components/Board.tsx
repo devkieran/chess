@@ -57,15 +57,33 @@ function Board() {
           return;
         }
 
-        if (
-          (selectedPiece.colour === "white" &&
-            squareRank - selectedSquareRank !== 1) ||
-          (selectedPiece.colour === "black" &&
-            selectedSquareRank - squareRank !== 1)
-        ) {
-          console.info("Pawns can only move one square at a time");
-          return;
+        const squaresBeingMoved =
+          selectedPiece.colour === "white"
+            ? squareRank - selectedSquareRank
+            : selectedSquareRank - squareRank;
+
+        switch (squaresBeingMoved) {
+          case 1: {
+            // legal move - do nothing
+            break;
+          }
+          case 2: {
+            if (selectedPiece.colour === "white" && selectedSquareRank !== 2) {
+              console.info("Impossible move");
+              return;
+            }
+            if (selectedPiece.colour === "black" && selectedSquareRank !== 7) {
+              console.info("Impossible move");
+              return;
+            }
+            break;
+          }
+          default: {
+            console.info("Impossible move");
+            return;
+          }
         }
+
         break;
       }
       default: {
